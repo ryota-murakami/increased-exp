@@ -4,36 +4,6 @@
   "version": "5",
   "dialect": "mysql",
   "tables": {
-    "SequelizeMeta": {
-      "name": "SequelizeMeta",
-      "columns": {
-        "name": {
-          "autoincrement": false,
-          "name": "name",
-          "type": "varchar(255)",
-          "primaryKey": false,
-          "notNull": true
-        }
-      },
-      "compositePrimaryKeys": {
-        "SequelizeMeta_name": {
-          "name": "SequelizeMeta_name",
-          "columns": [
-            "name"
-          ]
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {},
-      "uniqueConstraints": {
-        "name": {
-          "name": "name",
-          "columns": [
-            "name"
-          ]
-        }
-      }
-    },
     "authors": {
       "name": "authors",
       "columns": {
