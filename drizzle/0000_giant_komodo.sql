@@ -1,12 +1,3 @@
--- Current sql file was generated after introspecting the database
--- If you want to run this migration please uncomment this code before executing migrations
-/*
-CREATE TABLE `SequelizeMeta` (
-	`name` varchar(255) NOT NULL,
-	CONSTRAINT `SequelizeMeta_name` PRIMARY KEY(`name`),
-	CONSTRAINT `name` UNIQUE(`name`)
-);
---> statement-breakpoint
 CREATE TABLE `authors` (
 	`createdAt` datetime NOT NULL,
 	`id` int AUTO_INCREMENT NOT NULL,
