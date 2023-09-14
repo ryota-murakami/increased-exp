@@ -27,6 +27,7 @@
     "@types",
     "mocks",
     "lib",
+    "drizzle",
     ".storybook",
     ".eslintrc.cjs",
     "prettier.config.js",
