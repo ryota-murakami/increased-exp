@@ -34,7 +34,8 @@
     "setupTests.ts",
     "postcss.config.js",
     "vite.config.ts",
-    "vitest.config.ts"
+    "vitest.config.ts",
+    "drizzle.config.ts"
   ],
   "exclude": ["public/mockServiceWorker.js", "server_build", "storybook-static"]
 }
