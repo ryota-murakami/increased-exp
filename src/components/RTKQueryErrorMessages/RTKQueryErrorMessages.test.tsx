@@ -1,3 +1,4 @@
+/* eslint-disable sort-keys-custom-order/object-keys */
 import type { FetchBaseQueryError } from '@reduxjs/toolkit/query'
 import React from 'react'
 

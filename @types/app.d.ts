@@ -9,11 +9,11 @@ type getDataType<T> = InferMySqlColumnType<T>['data']
  */
 declare global {
   interface Author {
-    updatedAt: getDataType<(typeof authors)['updatedAt']>
     id: getDataType<(typeof authors)['id']>
     name: getDataType<(typeof authors)['name']>
-    password: getDataType<(typeof authors)['password']>
     createdAt: getDataType<(typeof authors)['createdAt']>
+    password: getDataType<(typeof authors)['password']>
+    updatedAt: getDataType<(typeof authors)['updatedAt']>
   }
 
   interface Post {
@@ -28,10 +28,10 @@ declare global {
 
   interface Stock {
     id: getDataType<(typeof stocks)['id']>
-    pageTitle: getDataType<(typeof stocks)['pageTitle']>
-    url: getDataType<(typeof stocks)['url']>
     createdAt: getDataType<(typeof stocks)['createdAt']>
+    pageTitle: getDataType<(typeof stocks)['pageTitle']>
     updatedAt: getDataType<(typeof stocks)['updatedAt']>
+    url: getDataType<(typeof stocks)['url']>
   }
 
   type StockList = Stock[]
