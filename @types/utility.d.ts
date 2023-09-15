@@ -61,7 +61,7 @@ declare type JsonValue = JsonPrimitive | JsonObject | JsonArray
 declare type JsonObject = { [Key in string]?: JsonValue }
 
 // https://www.youtube.com/shorts/2lCCKiWGlC0
-declare type Pretty<T> = {
+declare type Prettify<T> = {
   [K in keyof T]: T[K]
 } & {}
 
