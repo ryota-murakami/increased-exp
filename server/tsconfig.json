@@ -22,7 +22,7 @@
     "db",
     "lib",
     "index.ts",
-    "api.ts",
+    "api/index.ts",
     "cron.ts",
     "auth.ts",
     "../@types",

@@ -9,12 +9,14 @@ import type {
 } from 'express'
 import jwt from 'jsonwebtoken'
 
-import { isAuthorized } from './auth'
-import db from './db/models'
-import type AuthorModel from './db/models/authorModel'
-import type PostModel from './db/models/postModel'
-import type StockModel from './db/models/stockModel'
-import Logger from './lib/Logger'
+import { isAuthorized } from '../auth'
+import db from '../db/models'
+import type AuthorModel from '../db/models/authorModel'
+import type PostModel from '../db/models/postModel'
+import type StockModel from '../db/models/stockModel'
+import Logger from '../lib/Logger'
+
+import { userCount } from './controllers/user'
 
 export const cookieOptions: CookieOptions = {
   httpOnly: true,
@@ -28,13 +30,7 @@ const router: Router = express.Router()
 /**
  API Implementation
  */
-router.get(
-  '/user_count',
-  async (req: Request, res: Response<Res.GetUserCount>) => {
-    const userCount = await db.author.count()
-    res.status(200).json({ userCount })
-  },
-)
+router.get('/user_count', userCount)
 
 router.get(
   '/post_list',
