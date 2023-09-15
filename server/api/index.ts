@@ -16,7 +16,7 @@ import type PostModel from '../db/models/postModel'
 import type StockModel from '../db/models/stockModel'
 import Logger from '../lib/Logger'
 
-import { userCount } from './controllers/user'
+import { userCount } from './controllers/userCount'
 
 export const cookieOptions: CookieOptions = {
   httpOnly: true,
