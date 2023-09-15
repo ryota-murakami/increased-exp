@@ -1,6 +1,6 @@
 import type { MySqlColumn } from 'drizzle-orm/mysql-core'
 
-import type { authors } from '../drizzle/schema'
+import type { authors, posts, stocks } from '../drizzle/schema'
 
 type InferMySqlColumnType<T> = T extends MySqlColumn<infer U> ? U : never
 type getDataType<T> = InferMySqlColumnType<T>['data']
@@ -16,30 +16,30 @@ declare global {
     createdAt: getDataType<(typeof authors)['createdAt']>
   }
 
-  declare interface Post {
-    id: number
-    title: string
-    body: string
-    createdAt: string
-    updatedAt: string
+  interface Post {
+    id: getDataType<(typeof posts)['id']>
+    title: getDataType<(typeof posts)['title']>
+    body: getDataType<(typeof posts)['body']>
+    createdAt: getDataType<(typeof posts)['createdAt']>
+    updatedAt: getDataType<(typeof posts)['updatedAt']>
   }
 
-  declare type Posts = Post[]
+  type Posts = Post[]
 
-  declare interface Stock {
-    id: number
-    pageTitle: string
-    url: string
-    createdAt: string
-    updatedAt: string
+  interface Stock {
+    id: getDataType<(typeof stocks)['id']>
+    pageTitle: getDataType<(typeof stocks)['pageTitle']>
+    url: getDataType<(typeof stocks)['url']>
+    createdAt: getDataType<(typeof stocks)['createdAt']>
+    updatedAt: getDataType<(typeof stocks)['updatedAt']>
   }
 
-  declare type StockList = Stock[]
+  type StockList = Stock[]
 
   /**
    * Authentication
    */
-  declare type JWTtoken = string
+  type JWTtoken = string
 
-  declare type JWTpayload = Author // @TODO Omit password
+  type JWTpayload = Author // @TODO Omit password
 }
