@@ -4,6 +4,10 @@ import { db } from '../../../drizzle'
 import { stocks } from '../../../drizzle/schema'
 import Logger from '../../lib/Logger'
 
+export const getStockList = async (res: Response) => {
+  const stockList = await db.select().from(stocks)
+  res.status(200).json(stockList)
+}
 export const pushStock = async (
   req: Request,
   res: Response,

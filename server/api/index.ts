@@ -1,11 +1,6 @@
 import bcrypt from 'bcrypt'
 import express from 'express'
-import type {
-  Router,
-  CookieOptions,
-  Request,
-  Response,
-} from 'express'
+import type { Router, CookieOptions, Request, Response } from 'express'
 import jwt from 'jsonwebtoken'
 
 import { isAuthorized } from '../auth'
@@ -20,7 +15,7 @@ import {
   createPost,
   updatePost,
 } from './routes/post'
-import { pushStock } from './routes/stock'
+import { pushStock, getStockList } from './routes/stock'
 import { userCount } from './routes/user'
 
 export const cookieOptions: CookieOptions = {
@@ -114,10 +109,7 @@ router.post('/update', updatePost)
 
 router.post('/push_stock', pushStock)
 
-router.get('/stocklist', async (_req, res) => {
-  const stockList = await db.stock.findAll()
-  res.status(200).json(stockList)
-})
+router.get('/stocklist', getStockList)
 
 router.delete('/stock/:id', async (req, res) => {
   if (!isAuthorized(req, res))
