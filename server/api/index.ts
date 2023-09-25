@@ -17,6 +17,7 @@ import type StockModel from '../db/models/stockModel'
 import Logger from '../lib/Logger'
 
 import { userCount } from './controllers/userCount'
+import { getAllPost } from './routes/post'
 
 export const cookieOptions: CookieOptions = {
   httpOnly: true,
@@ -32,45 +33,7 @@ const router: Router = express.Router()
  */
 router.get('/user_count', userCount)
 
-router.get(
-  '/post_list',
-  async (
-    req: Request<
-      _,
-      _,
-      _,
-      {
-        page: Override<Req.PostList['page'], string>
-        perPage: Override<Req.PostList['perPage'], string>
-      }
-    >,
-    res: Response<Res.PostList>,
-  ) => {
-    const page = parseInt(req.query.page, 10)
-    const perPage = parseInt(req.query.perPage, 10)
-    const total = await db.post.count()
-
-    const offset = perPage * (page - 1)
-    let options
-    if (0 >= offset) {
-      options = {
-        limit: perPage,
-        order: [['id', 'DESC']],
-      }
-    } else {
-      options = {
-        limit: perPage,
-        offset: offset,
-        order: [['id', 'DESC']],
-      }
-    }
-
-    // @ts-ignore Argument of type '{ limit: number; order: string[][]; } | { limit: number; offset: number; order: string[][]; }' is not assignable to parameter of type 'FindOptions<any> | undefined'.
-    const postList = await db.post.findAll(options)
-    // @ts-ignore Type 'PostModel[]' is not assignable to type 'Post[]'. Type 'PostModel' is missing the following properties from type 'Post': createdAt, updatedAt
-    res.status(200).json({ postList, total })
-  },
-)
+router.get('/post_list', getAllPost)
 
 router.get('/post/:id', async (req: Request, res: Response) => {
   const post = await db.post.findOne({
