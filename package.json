@@ -160,6 +160,7 @@
     "db:truncate": "yarn db:drop && yarn db:create && yarn db:migrate",
     "db:create": "sequelize db:create",
     "db:drop": "sequelize db:drop",
+    "db:generate:migrate": "drizzle-kit generate:mysql --schema=./drizzle/schema.ts",
     "db:migrate": "sequelize db:migrate",
     "db:seed": "sequelize db:seed",
     "db:seed:undo": "sequelize db:seed:undo",

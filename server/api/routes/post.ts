@@ -59,7 +59,7 @@ export const deletePost = async (req: Request, res: Response) => {
     return res.status(403).json({ message: 'unauthorized' })
 
   try {
-    //@ts-ignore
+    //@ts-expect-error
     await db.delete(posts).where(eq(posts.id, req.params.id))
     res.status(200).json({ message: 'Delete Successful!' })
   } catch (error: unknown) {

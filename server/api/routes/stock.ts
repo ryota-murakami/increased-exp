@@ -6,7 +6,7 @@ import { stocks } from '../../../drizzle/schema'
 import { isAuthorized } from '../../auth'
 import Logger from '../../lib/Logger'
 
-export const getStockList = async (res: Response) => {
+export const getStockList = async (_req: Request, res: Response) => {
   const stockList = await db.select().from(stocks)
   res.status(200).json(stockList)
 }
