@@ -10,7 +10,7 @@ declare namespace Res {
   /**
    * POST: /api/signup
    */
-  declare type SignUp = Author | Res.Error
+  declare type SignUp = { message: string } | Res.Error
 
   /**
    * GET /api/user_count
