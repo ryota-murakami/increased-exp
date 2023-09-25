@@ -35,9 +35,6 @@ declare namespace Req {
    * POST: /api/update
    */
   declare interface UpdatePost {
-    id: Post['id']
-    title: Post['title']
-    author: Author
-    body: Post['body']
+    message: string
   }
 }

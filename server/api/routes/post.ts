@@ -1,5 +1,5 @@
 import { sql, desc, eq } from 'drizzle-orm'
-import type { Request, Response } from 'express'
+import type { Request, Response, NextFunction } from 'express'
 
 import { db } from '../../../drizzle'
 import { posts } from '../../../drizzle/schema'
@@ -97,5 +97,27 @@ export const createPost = async (req: Request, res: Response) => {
         error: `something wrong: ${JSON.stringify(error)}`,
       })
     }
+  }
+}
+
+export const updatePost = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  if (!isAuthorized(req, res))
+    return res.status(403).json({ message: 'unauthorized' })
+
+  const body = req.body
+  try {
+    await db
+      .update(posts)
+      .set({ title: body.title, body: body.body })
+      .where(eq(posts.id, body.id))
+
+    res.status(200).json({ message: 'Post Updated!' })
+  } catch (error) {
+    Logger.error(error)
+    next(error)
   }
 }

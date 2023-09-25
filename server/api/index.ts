@@ -15,7 +15,13 @@ import type AuthorModel from '../db/models/authorModel'
 import type StockModel from '../db/models/stockModel'
 import Logger from '../lib/Logger'
 
-import { getAllPost, getPost, deletePost, createPost } from './routes/post'
+import {
+  getAllPost,
+  getPost,
+  deletePost,
+  createPost,
+  updatePost,
+} from './routes/post'
 import { userCount } from './routes/user'
 
 export const cookieOptions: CookieOptions = {
@@ -105,26 +111,7 @@ router.delete('/post/:id', deletePost)
 
 router.post('/create', createPost)
 
-router.post(
-  '/update',
-  async (req: Request, res: Response, next: NextFunction) => {
-    if (!isAuthorized(req, res))
-      return res.status(403).json({ message: 'unauthorized' })
-
-    const body = req.body
-    try {
-      await db.post.update(
-        { title: body.title, body: body.body },
-        { where: { id: body.id } },
-      )
-
-      res.status(200).json({ message: 'Post Updated!' })
-    } catch (error) {
-      Logger.error(error)
-      next(error)
-    }
-  },
-)
+router.post('/update', updatePost)
 
 router.post(
   '/push_stock',
