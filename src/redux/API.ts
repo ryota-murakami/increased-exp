@@ -20,7 +20,7 @@ export const API = createApi({
   }),
   endpoints: (builder) => ({
     createPost: builder.mutation<Post, Req.CreatePost>({
-      invalidatesTags: ['Posts'],
+      invalidatesTags: () => [{ type: 'Posts' }],
       query: (values) => ({
         body: values,
         method: 'POST',
@@ -32,7 +32,7 @@ export const API = createApi({
       Res.DeletePost,
       { id: Post['id']; author: Author }
     >({
-      invalidatesTags: ['Posts'],
+      invalidatesTags: (_result, _error, { id }) => [{ id, type: 'Posts' }],
       query: ({ id, author }) => ({
         body: { author: author },
         method: 'DELETE',
@@ -108,7 +108,7 @@ export const API = createApi({
     }),
 
     updatePost: builder.mutation<Res.UpdatePost, Req.UpdatePost>({
-      invalidatesTags: () => [{ type: 'Posts' }],
+      invalidatesTags: (_result, _error, { id }) => [{ id, type: 'Posts' }],
       query: (values) => ({
         body: values,
         method: 'POST',
