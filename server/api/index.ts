@@ -12,11 +12,10 @@ import jwt from 'jsonwebtoken'
 import { isAuthorized } from '../auth'
 import db from '../db/models'
 import type AuthorModel from '../db/models/authorModel'
-import type PostModel from '../db/models/postModel'
 import type StockModel from '../db/models/stockModel'
 import Logger from '../lib/Logger'
 
-import { getAllPost, getPost, deletePost } from './routes/post'
+import { getAllPost, getPost, deletePost, createPost } from './routes/post'
 import { userCount } from './routes/user'
 
 export const cookieOptions: CookieOptions = {
@@ -104,30 +103,7 @@ router.get('/post/:id', getPost)
 
 router.delete('/post/:id', deletePost)
 
-router.post('/create', async (req: Request, res: Response) => {
-  if (!isAuthorized(req, res))
-    return res.status(403).json({ message: 'unauthorized' })
-
-  const { title, body } = req.body
-  try {
-    const postModelInstance = await db.post.create<PostModel>({
-      title: title,
-      body: body,
-    })
-    const post = postModelInstance.toJSON()
-    res.status(201).json(post)
-  } catch (error: unknown) {
-    if (error instanceof Error) {
-      Logger.error(error)
-      res.status(500).json({ error: error.message })
-    } else {
-      Logger.error(error)
-      res.status(500).json({
-        error: `something wrong: ${JSON.stringify(error)}`,
-      })
-    }
-  }
-})
+router.post('/create', createPost)
 
 router.post(
   '/update',

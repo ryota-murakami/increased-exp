@@ -74,3 +74,28 @@ export const deletePost = async (req: Request, res: Response) => {
     }
   }
 }
+
+export const createPost = async (req: Request, res: Response) => {
+  if (!isAuthorized(req, res))
+    return res.status(403).json({ message: 'unauthorized' })
+
+  const { title, body } = req.body
+  try {
+    //@ts-ignore
+    await db.insert(posts).values({
+      title: title,
+      body: body,
+    })
+    res.status(201).json({ message: 'New Post Created!' })
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      Logger.error(error)
+      res.status(500).json({ error: error.message })
+    } else {
+      Logger.error(error)
+      res.status(500).json({
+        error: `something wrong: ${JSON.stringify(error)}`,
+      })
+    }
+  }
+}
