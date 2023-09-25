@@ -43,7 +43,7 @@ export const getAllPost = async (
     .limit(options.limit)
     .offset(options.offset)
     .orderBy(desc(posts.id))
-  // @ts-expect-error
+
   res.status(200).json({ postList, total: totalCount })
 }
 

@@ -28,7 +28,9 @@ declare namespace Req {
    * POST /api/create
    */
   declare interface CreatePost {
-    message: string
+    title: Post['title']
+    author: Author
+    body: Post['body']
   }
 
   /**

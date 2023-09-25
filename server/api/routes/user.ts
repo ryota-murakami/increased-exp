@@ -1,5 +1,5 @@
 import bcrypt from 'bcrypt'
-import { sql } from 'drizzle-orm'
+import { sql, eq } from 'drizzle-orm'
 import type { Handler, Request, Response } from 'express'
 import jwt from 'jsonwebtoken'
 
@@ -55,5 +55,28 @@ export const signup = async (
         error: `something wrong: ${JSON.stringify(error)}`,
       })
     }
+  }
+}
+
+export const login = async ({ body }: Request, res: Response) => {
+  const sqlResult = await db
+    .select()
+    .from(authors)
+    .where(eq(authors.name, body.name))
+  const user = sqlResult[0]
+  if (user) {
+    const isValidPassword = await bcrypt.compare(body.password, user.password)
+
+    if (isValidPassword) {
+      const token: JWTtoken = jwt.sign(user, process.env.JWT_SECRET as string)
+      res.cookie('token', token, cookieOptions)
+      res.status(200).json(user)
+    } else {
+      Logger.warn('Invalid Password')
+      res.status(200).json({ failed: 'Invalid Password' }) // this is bad practice in real world product. Because 'Invalid Password' imply exists user that you input at the moment.
+    }
+  } else {
+    Logger.warn('User does not exist')
+    res.status(200).json({ failed: 'User does not exist' }) // this also bad practice in real world product Same reason.
   }
 }

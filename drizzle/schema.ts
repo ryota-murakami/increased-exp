@@ -1,3 +1,4 @@
+/* eslint-disable sort-keys-custom-order/object-keys */
 import {
   mysqlTable,
   primaryKey,
@@ -11,9 +12,9 @@ export const authors = mysqlTable(
   'authors',
   {
     id: int('id').autoincrement().notNull(),
-    name: varchar('name', { length: 255 }),
+    name: varchar('name', { length: 255 }).notNull(),
+    password: text('password').notNull(),
     createdAt: datetime('createdAt', { mode: 'string' }).notNull(),
-    password: text('password'),
     updatedAt: datetime('updatedAt', { mode: 'string' }).notNull(),
   },
   (table) => {
@@ -27,8 +28,8 @@ export const posts = mysqlTable(
   'posts',
   {
     id: int('id').autoincrement().notNull(),
-    title: varchar('title', { length: 255 }),
-    body: text('body'),
+    title: varchar('title', { length: 255 }).notNull(),
+    body: text('body').notNull(),
     createdAt: datetime('createdAt', { mode: 'string' }).notNull(),
     updatedAt: datetime('updatedAt', { mode: 'string' }).notNull(),
   },
@@ -43,10 +44,10 @@ export const stocks = mysqlTable(
   'stocks',
   {
     id: int('id').autoincrement().notNull(),
+    pageTitle: text('pageTitle').notNull(),
+    url: text('url').notNull(),
     createdAt: datetime('createdAt', { mode: 'string' }).notNull(),
-    pageTitle: text('pageTitle'),
     updatedAt: datetime('updatedAt', { mode: 'string' }).notNull(),
-    url: text('url'),
   },
   (table) => {
     return {
