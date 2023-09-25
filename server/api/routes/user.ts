@@ -80,3 +80,8 @@ export const login = async ({ body }: Request, res: Response) => {
     res.status(200).json({ failed: 'User does not exist' }) // this also bad practice in real world product Same reason.
   }
 }
+
+export const logout = (_req: Request, res: Response<Res.Logout>) => {
+  res.cookie('token', '', { expires: new Date() })
+  res.status(200).json({ message: 'Logout Successful' })
+}

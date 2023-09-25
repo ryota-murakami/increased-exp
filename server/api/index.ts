@@ -1,4 +1,4 @@
-import type { Router, Request, Response } from 'express'
+import type { Router } from 'express'
 import express from 'express'
 
 import {
@@ -9,7 +9,7 @@ import {
   updatePost,
 } from './routes/post'
 import { pushStock, getStockList, deleteStock } from './routes/stock'
-import { userCount, signup, login } from './routes/user'
+import { userCount, signup, login, logout } from './routes/user'
 
 const router: Router = express.Router()
 
@@ -22,10 +22,7 @@ router.post('/signup', signup)
 
 router.post('/login', login)
 
-router.get('/logout', (_req: Request, res: Response<Res.Logout>) => {
-  res.cookie('token', '', { expires: new Date() })
-  res.status(200).json({ message: 'Logout Successful' })
-})
+router.get('/logout', logout)
 
 router.get('/post_list', getAllPost)
 
