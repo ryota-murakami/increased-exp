@@ -3,7 +3,6 @@ import express from 'express'
 import type {
   Router,
   CookieOptions,
-  NextFunction,
   Request,
   Response,
 } from 'express'
@@ -12,7 +11,6 @@ import jwt from 'jsonwebtoken'
 import { isAuthorized } from '../auth'
 import db from '../db/models'
 import type AuthorModel from '../db/models/authorModel'
-import type StockModel from '../db/models/stockModel'
 import Logger from '../lib/Logger'
 
 import {
@@ -22,6 +20,7 @@ import {
   createPost,
   updatePost,
 } from './routes/post'
+import { pushStock } from './routes/stock'
 import { userCount } from './routes/user'
 
 export const cookieOptions: CookieOptions = {
@@ -113,23 +112,7 @@ router.post('/create', createPost)
 
 router.post('/update', updatePost)
 
-router.post(
-  '/push_stock',
-  async (req: Request, res: Response, next: NextFunction) => {
-    const body = req.body
-    try {
-      const stockModelInstance = await db.stock.create<StockModel>({
-        pageTitle: body.pageTitle,
-        url: body.url,
-      })
-      const stock = stockModelInstance.toJSON()
-      res.status(201).json(stock)
-    } catch (error) {
-      Logger.error(error)
-      next(error)
-    }
-  },
-)
+router.post('/push_stock', pushStock)
 
 router.get('/stocklist', async (_req, res) => {
   const stockList = await db.stock.findAll()
