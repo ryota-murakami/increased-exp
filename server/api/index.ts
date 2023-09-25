@@ -3,7 +3,6 @@ import express from 'express'
 import type { Router, CookieOptions, Request, Response } from 'express'
 import jwt from 'jsonwebtoken'
 
-import { isAuthorized } from '../auth'
 import db from '../db/models'
 import type AuthorModel from '../db/models/authorModel'
 import Logger from '../lib/Logger'
@@ -15,7 +14,7 @@ import {
   createPost,
   updatePost,
 } from './routes/post'
-import { pushStock, getStockList } from './routes/stock'
+import { pushStock, getStockList, deleteStock } from './routes/stock'
 import { userCount } from './routes/user'
 
 export const cookieOptions: CookieOptions = {
@@ -111,25 +110,7 @@ router.post('/push_stock', pushStock)
 
 router.get('/stocklist', getStockList)
 
-router.delete('/stock/:id', async (req, res) => {
-  if (!isAuthorized(req, res))
-    return res.status(403).json({ message: 'unauthorized' })
-
-  try {
-    await db.stock.destroy({ where: { id: req.params.id } })
-    res.status(200).json({ message: 'Delete Successful!' })
-  } catch (error: unknown) {
-    if (error instanceof Error) {
-      Logger.error(error)
-      res.status(500).json({ message: error.message })
-    } else {
-      Logger.error(error)
-      res
-        .status(500)
-        .json({ message: `someting wrong: ${JSON.stringify(error)}` })
-    }
-  }
-})
+router.delete('/stock/:id', deleteStock)
 
 // @TODO add update author info handler
 
