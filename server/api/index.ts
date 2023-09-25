@@ -16,7 +16,7 @@ import type PostModel from '../db/models/postModel'
 import type StockModel from '../db/models/stockModel'
 import Logger from '../lib/Logger'
 
-import { getAllPost } from './routes/post'
+import { getAllPost, getPost } from './routes/post'
 import { userCount } from './routes/user'
 
 export const cookieOptions: CookieOptions = {
@@ -35,13 +35,7 @@ router.get('/user_count', userCount)
 
 router.get('/post_list', getAllPost)
 
-router.get('/post/:id', async (req: Request, res: Response) => {
-  const post = await db.post.findOne({
-    where: { id: req.params.id },
-  })
-
-  res.status(200).json(post)
-})
+router.get('/post/:id', getPost)
 
 router.delete('/post/:id', async (req: Request, res: Response) => {
   if (!isAuthorized(req, res))

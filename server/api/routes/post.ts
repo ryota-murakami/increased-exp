@@ -1,4 +1,4 @@
-import { sql, desc } from 'drizzle-orm'
+import { sql, desc, eq } from 'drizzle-orm'
 import type { Request, Response } from 'express'
 
 import { db } from '../../../drizzle'
@@ -43,4 +43,11 @@ export const getAllPost = async (
     .orderBy(desc(posts.id))
   // @ts-expect-error
   res.status(200).json({ postList, total: totalCount })
+}
+
+export const getPost = async (req: Request, res: Response) => {
+  //@ts-ignore
+  const post = await db.select().from(posts).where(eq(posts.id, req.params.id))
+
+  res.status(200).json(post)
 }
