@@ -16,7 +16,7 @@ import type PostModel from '../db/models/postModel'
 import type StockModel from '../db/models/stockModel'
 import Logger from '../lib/Logger'
 
-import { getAllPost, getPost } from './routes/post'
+import { getAllPost, getPost, deletePost } from './routes/post'
 import { userCount } from './routes/user'
 
 export const cookieOptions: CookieOptions = {
@@ -32,30 +32,6 @@ const router: Router = express.Router()
  API Implementation
  */
 router.get('/user_count', userCount)
-
-router.get('/post_list', getAllPost)
-
-router.get('/post/:id', getPost)
-
-router.delete('/post/:id', async (req: Request, res: Response) => {
-  if (!isAuthorized(req, res))
-    return res.status(403).json({ message: 'unauthorized' })
-
-  try {
-    await db.post.destroy({ where: { id: req.params.id } })
-    res.status(200).json({ message: 'Delete Successful!' })
-  } catch (error: unknown) {
-    if (error instanceof Error) {
-      Logger.error(error)
-      res.status(500).json({ message: error.message })
-    } else {
-      Logger.error(error)
-      res
-        .status(500)
-        .json({ message: `someting wrong: ${JSON.stringify(error)}` })
-    }
-  }
-})
 
 router.post(
   '/signup',
@@ -117,10 +93,16 @@ router.post('/login', async ({ body }: Request, res: Response) => {
   }
 })
 
-router.get('/logout', (req: Request, res: Response<Res.Logout>) => {
+router.get('/logout', (_req: Request, res: Response<Res.Logout>) => {
   res.cookie('token', '', { expires: new Date() })
   res.status(200).json({ message: 'Logout Successful' })
 })
+
+router.get('/post_list', getAllPost)
+
+router.get('/post/:id', getPost)
+
+router.delete('/post/:id', deletePost)
 
 router.post('/create', async (req: Request, res: Response) => {
   if (!isAuthorized(req, res))
@@ -186,7 +168,7 @@ router.post(
   },
 )
 
-router.get('/stocklist', async (req, res) => {
+router.get('/stocklist', async (_req, res) => {
   const stockList = await db.stock.findAll()
   res.status(200).json(stockList)
 })

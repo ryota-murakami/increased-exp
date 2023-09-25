@@ -3,6 +3,8 @@ import type { Request, Response } from 'express'
 
 import { db } from '../../../drizzle'
 import { posts } from '../../../drizzle/schema'
+import { isAuthorized } from '../../auth'
+import Logger from '../../lib/Logger'
 
 export const getAllPost = async (
   req: Request<
@@ -50,4 +52,25 @@ export const getPost = async (req: Request, res: Response) => {
   const post = await db.select().from(posts).where(eq(posts.id, req.params.id))
 
   res.status(200).json(post)
+}
+
+export const deletePost = async (req: Request, res: Response) => {
+  if (!isAuthorized(req, res))
+    return res.status(403).json({ message: 'unauthorized' })
+
+  try {
+    //@ts-ignore
+    await db.delete(posts).where(eq(posts.id, req.params.id))
+    res.status(200).json({ message: 'Delete Successful!' })
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      Logger.error(error)
+      res.status(500).json({ message: error.message })
+    } else {
+      Logger.error(error)
+      res
+        .status(500)
+        .json({ message: `someting wrong: ${JSON.stringify(error)}` })
+    }
+  }
 }
