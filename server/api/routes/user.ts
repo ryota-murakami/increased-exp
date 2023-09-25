@@ -39,7 +39,7 @@ export const signup = async (
     password: hash,
   }
   try {
-    //@ts-ignore
+    //@ts-expect-error
     await db.insert(authors).values(author)
 
     const token: JWTtoken = jwt.sign(author, process.env.JWT_SECRET as string)

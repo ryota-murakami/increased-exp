@@ -17,7 +17,7 @@ export const pushStock = async (
 ) => {
   const body = req.body
   try {
-    //@ts-ignore
+    //@ts-expect-error
     await db.insert(stocks).values({
       pageTitle: body.pageTitle,
       url: body.url,
@@ -35,7 +35,7 @@ export const deleteStock = async (req: Request, res: Response) => {
     return res.status(403).json({ message: 'unauthorized' })
 
   try {
-    //@ts-ignore
+    //@ts-expect-error
     await db.delete(stocks).where(eq(stocks.id, req.params.id))
     res.status(200).json({ message: 'Delete Successful!' })
   } catch (error: unknown) {

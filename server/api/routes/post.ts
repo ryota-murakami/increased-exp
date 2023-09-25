@@ -48,7 +48,7 @@ export const getAllPost = async (
 }
 
 export const getPost = async (req: Request, res: Response) => {
-  //@ts-ignore
+  //@ts-expect-error
   const post = await db.select().from(posts).where(eq(posts.id, req.params.id))
 
   res.status(200).json(post)
@@ -81,7 +81,7 @@ export const createPost = async (req: Request, res: Response) => {
 
   const { title, body } = req.body
   try {
-    //@ts-ignore
+    //@ts-expect-error
     await db.insert(posts).values({
       title: title,
       body: body,
